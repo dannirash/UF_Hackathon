@@ -25,14 +25,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.add(`I'm sorry, can you try again?`);
   }
 
-  function race(agent){
+  function Tradein(agent){
     //Here we get the type of the utterance
-    const position = agent.parameters.position;
-    const query = agent.parameters.query;
-    const racer = agent.parameters.racer;
-    const type = agent.parameters.type;
-    
-    if(position=='champion' && query=='recent'){
+    const smartphone = agent.parameters.smartphone;
+
+      if (smartphone =='champion' && query=='recent'){
       return axios({
         method: "GET",
         url: "http://ergast.com/api/f1/current/last/results.json",
@@ -71,14 +68,13 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         });
     }
     
-	
   }
 
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  intentMap.set('Race Intent', race);
+  intentMap.set('Trade-in', Tradein);
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
