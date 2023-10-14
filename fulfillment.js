@@ -29,39 +29,17 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     //Here we get the type of the utterance
     const smartphone = agent.parameters.smartphone;
 
-      if (smartphone =='champion' && query=='recent'){
+    if (smartphone) {
       return axios({
         method: "GET",
-        url: "http://ergast.com/api/f1/current/last/results.json",
+        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/iphone_prices.json",
         data: "",
       })
         .then((response) => {
-          var json = response.data.MRData.RaceTable; //General query for race
-
-          var name = json.Races[0].Results[0].Driver.givenName;
-          var surname = json.Races[0].Results[0].Driver.familyName;
-	      console.log("This is a test");
-          agent.add(`The winner of the most recent race was ${name + " " + surname}`); 
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    else if (racer=='pilot' && type=='race'){
-      return axios({
-        method: "GET",
-        url: "http://ergast.com/api/f1/current/last/results.json",
-        data: "",
-      })
-        .then((response) => {
-          var json = response.data.MRData.RaceTable; //General query for race
-
-          var name = json.Races[0].Results[0].Driver.givenName;
-          var surname = json.Races[0].Results[0].Driver.familyName;
-       	  var name1 = json.Races[0].Results[1].Driver.givenName;
-          var surname1 = json.Races[0].Results[1].Driver.familyName;
-	      console.log("This is a test2");
-          agent.add(`The best race is  ${name + " " + surname} vs ${name1 + " " + surname1}` ); 
+          var json = response.data.iphone_prices;
+          var phone = smartphone;
+          var price = json[phone];
+          agent.add(`The price of ${phone} is ${price}`);
         })
         .catch((error) => {
           console.log(error);
