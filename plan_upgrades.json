@@ -1,0 +1,46 @@
+{
+    "phone_upgrades": [
+        {
+            "phone_model": "iPhone 13",
+            "description": "The latest iPhone model with advanced camera features and improved performance.",
+            "compatibility": [
+                "5G Ultra Wideband",
+                "4G LTE"
+            ],
+            "price": "$799",
+            "trade_in_value": "$300",
+            "associated_plans": [
+                "Unlimited 5G Ultra Wideband",
+                "Premium Data Plan"
+            ]
+        },
+        {
+            "phone_model": "Samsung Galaxy S21",
+            "description": "A flagship Android smartphone with a high-resolution display and powerful processing capabilities.",
+            "compatibility": [
+                "5G Ultra Wideband",
+                "4G LTE"
+            ],
+            "price": "$699",
+            "trade_in_value": "$250",
+            "associated_plans": [
+                "Premium Plus Plan",
+                "5G Unlimited Plan"
+            ]
+        },
+        {
+            "phone_model": "Google Pixel 6",
+            "description": "The latest Pixel smartphone known for its exceptional camera quality and seamless Android experience.",
+            "compatibility": [
+                "5G Ultra Wideband",
+                "4G LTE"
+            ],
+            "price": "$599",
+            "trade_in_value": "$200",
+            "associated_plans": [
+                "Essential Data Plan",
+                "5G Nationwide Plan"
+            ]
+        }
+    ]
+}

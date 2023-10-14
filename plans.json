@@ -1,0 +1,71 @@
+{
+    "plans": [
+        {
+            "plan_name": "Unlimited 5G Ultra Wideband",
+            "description": "Unlimited data with 5G Ultra Wideband access.",
+            "price": "$80 per month",
+            "features": [
+                "5G Ultra Wideband access",
+                "Unlimited data",
+                "HD video streaming"
+            ]
+        },
+        {
+            "plan_name": "Shared Data Plan",
+            "description": "Shared data plan for multiple devices.",
+            "price": "$60 per month",
+            "features": [
+                "Shared data",
+                "Multiple device support",
+                "Optional 5G access"
+            ]
+        },
+        {
+            "plan_name": "Prepaid Plan",
+            "description": "Prepaid plan with flexible data options.",
+            "price": "$40 per month",
+            "features": [
+                "Flexible data options",
+                "No annual contract",
+                "Optional 5G access"
+            ]
+        }
+    ]
+}
+
+
+//Unlimited Welcome plan - $65/mo per line with autopay discount
+//Unlimited Plus plan - $80/mo per line with autopay discount
+//Unlimited Ultimate plan - $90/mo per line with autopay discount
+
+/*Unlimited Ultimate:
+Line Count: 5+ phones --- $52/mo per line
+4 phones --- $55/mo per line
+3 phones --- $65/mo per line
+2 phones --- $80/mo per line
+1 phone --- $90/mo per line
+
+Unlimited Plus:
+Line Count: 5+ phones --- $42/mo per line
+4 phones --- $45/mo per line
+3 phones --- $55/mo per line
+2 phones --- $70/mo per line
+1 phone --- $80/mo per line
+
+Unlimited Welcome:
+Line Count: 5+ phones --- $27/mo per line
+4 phones --- $30/mo per line
+3 phones --- $40/mo per line
+2 phones --- $55/mo per line
+1 phone --- $65/mo per line
+
+
+The Unlimited Ultimate provides unlimited 5G premium data, call and text plus 60GB mobile hotspot.
+
+The Unlimited Plus provides unlimited 5G premium data, call and text plus 30GB mobile hotspot.
+
+The Unlimited Welcome provides unlimited data, call and text.
+
+The trade-in value will depend on the device that you are looking to get, 
+the model of the device that you are looking to trade-in
+ and that plan that you will choose.*/
