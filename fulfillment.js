@@ -45,7 +45,30 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           console.log(error);
         });
     }
-    
+  }
+
+  function Upgrade(agent){
+    //Here we get the type of the utterance
+    const smartphone = agent.parameters.smartphone;
+
+    if (smartphone) {
+      return axios({
+        method: "GET",
+        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/iphone_prices.json",
+        data: "",
+      })
+        .then((response) => {
+          var json = response.data.iphone_prices;
+          var phone = smartphone;
+          var price1 = json[phone[0]];
+          var price2 = json[phone[1]];
+          var result = price2 - price1;
+          agent.add(`The price diffrence is ${result}`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   // Run the proper function handler based on the matched Dialogflow intent name
@@ -53,6 +76,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Trade-in', Tradein);
+  intentMap.set('Upgrade', Upgrade);
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
