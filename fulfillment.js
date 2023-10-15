@@ -66,10 +66,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         //console.log("DEBUG LOG 3");
         console.error("DEBUG LOG 3");
         const json = response.data.iphone_prices;
-        const price2 = getPrice(json, phone2);
-        price2 = (price2 + price2);
+        let price2 = json[phone2];
         agent.add(`Trading in your ${phone1} for an ${phone2} would be: ${price2}`);
-
+        calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
+        calculatePromotion("Unlimited Plus plan", 850, 80, price2);
+        calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
