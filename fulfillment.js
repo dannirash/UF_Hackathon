@@ -6,7 +6,6 @@ const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
 
-//Added for tutorial
 const axios = require('axios');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
@@ -17,7 +16,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
   function welcome(agent) {
-    agent.add(`Welcome to my agent!`);
+    agent.add(`Welcome to the Verizon Phone and Phone Plans agent!`);
   }
 
   function fallback(agent) {
@@ -39,7 +38,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           const phone = smartphone;
           const price = json[phone];
           const upgradeInfo = getUpgradeInfo(phone);
-          agent.add(`The price of ${phone} is ${price}. Here is the plan upgrade information: ${upgradeInfo}`);
+          agent.add(`For your ${phone} ${upgradeInfo}`);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
@@ -47,6 +46,28 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         });
     }
   }
+
+  function PricingInfo(agent) {
+    const smartphone = agent.parameters.smartphone;
+    if (smartphone) {
+      return axios({
+        method: "GET",
+        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/main/iphone_prices.json",
+        data: "",
+      })
+        .then((response) => {
+          const json = response.data.iphone_prices;
+          const price = json[smartphone];
+          agent.add(`The price of ${smartphone} is $${price}`);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+          agent.add("There was an error fetching pricing information. Please try again later.");
+        });
+    }
+
+  }
+
   function UpgradeSelectNum(agent) {
     let num = agent.parameters.number;
     if (num == 1)
@@ -140,10 +161,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
 
-  function getPrice(json, phone) {
-    return json[phone] || null;
-  }
-
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
     let result = price - tradeInValue;
     if (result < 0) {
@@ -157,9 +174,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     const betterPromotionPhones = ["iPhone 8", "iPhone 9", "iPhone 10", "iPhone 11", "iPhone 12",
       "iPhone 13", "iPhone 14", "iPhone 15"];
     if (betterPromotionPhones.includes(phone)) {
-      return "For the eligible phones, the trade-in values are $1000 for the Unlimited Ultimate plan, $830 for the Unlimited Plus plan, and $415 for the Unlimited Welcome plan.";
+      return "The trade-in values are $1000 for the Unlimited Ultimate plan, $830 for the Unlimited Plus plan, and $415 for the Unlimited Welcome plan.";
     } else {
-      return "For other phones, the maximum trade-in value is $830 for the Unlimited Ultimate plan, $415 for the Unlimited Plus plan, and $100 for the Unlimited Welcome plan.";
+      return "The maximum trade-in value is $830 for the Unlimited Ultimate plan, $415 for the Unlimited Plus plan, and $100 for the Unlimited Welcome plan.";
     }
   }
 
@@ -171,5 +188,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Upgrade', Upgrade);
   intentMap.set('Plans-info', PlansInfo);
   intentMap.set('Upgrade - select.number', UpgradeSelectNum);
+<<<<<<< Updated upstream
+=======
+  intentMap.set('Pricing', PricingInfo);
+  // intentMap.set('your intent name here', yourFunctionHandler);
+  // intentMap.set('your intent name here', googleAssistantHandler);
+>>>>>>> Stashed changes
   agent.handleRequest(intentMap);
 });
