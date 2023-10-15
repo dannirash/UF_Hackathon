@@ -87,9 +87,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
     console.log("DEBUG LOG 5");
-    
-    const result = tradeInValue - price;
-    return(`- ${result}$ under ${plan}`);
+    let result = price - tradeInValue;
+    if (result < 0) {result = 0}
+    return(`| ${result}$ under ${plan}`);
   }
 
   function getUpgradeInfo(phone) {
