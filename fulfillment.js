@@ -61,18 +61,19 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   function Upgrade(agent) {
     const smartphones = agent.parameters.smartphone;
-
+	console.log("DEBUG LOG 1");
     if (smartphones && smartphones.length >= 2) {
       const phone1 = smartphones[0]; // Current phone
       const phone2 = smartphones[1]; // New phone
-      agent.add(phone1 + phone2)
-      console.log(phone1 + phone2)
+      agent.add(phone1 + phone2);
+      console.log("DEBUG LOG 2");
       return axios({
         method: "GET",
         url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/iphone_prices.json",
         data: "",
       })
         .then((response) => {
+        	console.log("DEBUG LOG 3");
           const json = response.data.iphone_prices;
           const price2 = getPrice(json, phone2);
 
@@ -92,10 +93,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   function getPrice(json, phone) {
+    console.log("DEBUG LOG 4");
     return json[phone] || null;
   }
 
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
+    console.log("DEBUG LOG 5");
     const result = tradeInValue - price + monthlyPrice;
     agent.add(`- ${result}$ under ${plan}`);
   }
