@@ -47,24 +47,28 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         });
     }
   }
-
+  function UpgradeSelectNum(agent) {
+    const num = agent.parameters.number;
+    if(num == 1){
+      agent.add("You chose plan 1");
+    }
+    else{
+      agent.add("Choose a correct plan");
+    }
+  }
 
   function Upgrade(agent) {
     const smartphones = agent.parameters.smartphone;
-    console.log("DEBUG LOG 1");
-    console.error("DEBUG LOG 1");
     const phone1 = smartphones[0]; // Current phone
     const phone2 = smartphones[1]; // New phone
-    console.log("DEBUG LOG 2");
-    console.error("DEBUG LOG 2");
     return axios({
       method: "GET",
       url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/main/iphone_prices.json",
       data: "",
     })
       .then((response) => {
-        //console.log("DEBUG LOG 3");
-        console.error("DEBUG LOG 3");
+        //
+        
         const json = response.data.iphone_prices;
         let price2 = json[phone2];
         const quote1 = calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
@@ -83,12 +87,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   function getPrice(json, phone) {
-    console.log("DEBUG LOG 4");
     return json[phone] || null;
   }
 
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
-    console.log("DEBUG LOG 5");
     let result = price - tradeInValue;
     if (result < 0) {
       result = 0;
@@ -96,8 +98,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
     return(`For the ${plan}, the price is $${result}.`);
   }
-
-  
 
   function getUpgradeInfo(phone) {
     const betterPromotionPhones = ["iPhone 8", "iPhone 9", "iPhone 10", "iPhone 11", "iPhone 12",
@@ -109,13 +109,13 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
 
-
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Trade-in', Tradein);
   intentMap.set('Upgrade', Upgrade);
+  intentMap.set('Upgrade - select.number', UpgradeSelectNum)
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
