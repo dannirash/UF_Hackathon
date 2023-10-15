@@ -161,6 +161,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
     let result = price - tradeInValue;
     if (result < 0) {
@@ -180,6 +184,21 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
 
+  function newPhone(agent){
+    const model = agent.parameters.phone_model;
+    if(model){
+      agent.add(`${model} is a perfect choice! Do you have a phone to trade-in?`);
+    }
+    else{
+      agent.add(`Sorry, what Phone model do you want?`);
+    }
+  }
+  function newPhotradeYesModel(agent){
+    Tradein(agent);
+  }
+  function newPhotradeNo(agent){
+    Tradein(agent);
+  }
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
@@ -189,10 +208,16 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Plans-info', PlansInfo);
   intentMap.set('Upgrade - select.number', UpgradeSelectNum);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
   intentMap.set('Pricing', PricingInfo);
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
+>>>>>>> Stashed changes
+=======
+  intentMap.set('New Phone', newPhone);
+  intentMap.set('New Phone Trade in - yes - model', newPhotradeYesModel);
+  intentMap.set('New Phone Trade in - no', newPhotradeNo);
 >>>>>>> Stashed changes
   agent.handleRequest(intentMap);
 });
