@@ -86,6 +86,53 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       });
   }
 
+
+  function PlansInfo(agent) {
+    const plan = agent.parameters.phone_plan;
+    const plansDictionary = {
+      "Unlimited Ultimate": {
+        "data": "Unlimited 5G premium data",
+        "call_and_text": "Unlimited",
+        "mobile_hotspot": "60GB",
+        "cost": "$90 per month"
+      },
+      "Unlimited Plus": {
+        "data": "Unlimited 5G premium data",
+        "call_and_text": "Unlimited",
+        "mobile_hotspot": "30GB",
+        "cost": "$80 per month"
+      },
+      "Unlimited Welcome": {
+        "data": "Unlimited",
+        "call_and_text": "Unlimited",
+        "mobile_hotspot": "Not Available",
+        "cost": "$65 per month"
+      }
+    };
+
+    if (plan) {
+      if (plan.toLowerCase() === 'all') {
+        let response = 'Here are the details for all plans:';
+        for (const [plan, details] of Object.entries(plansDictionary)) {
+          response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}`;
+        }
+        agent.add(response);
+      } else if (plansDictionary.hasOwnProperty(plan)) {
+        const planDetails = plansDictionary[plan];
+        const data = planDetails.data;
+        const callAndText = planDetails.call_and_text;
+        const mobileHotspot = planDetails.mobile_hotspot;
+        const cost = planDetails.cost;
+
+        agent.add(`Here are the details for the ${plan} plan: Data - ${data}, Call and Text - ${callAndText}, Mobile Hotspot - ${mobileHotspot}, Cost - ${cost}`);
+      } else {
+        agent.add(`Sorry, we do not have information for the ${plan} plan.`);
+      }
+    } else {
+      agent.add(`Please specify a plan or ask about all the plans.`);
+    }
+  }
+
   function getPrice(json, phone) {
     return json[phone] || null;
   }
@@ -115,6 +162,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Trade-in', Tradein);
   intentMap.set('Upgrade', Upgrade);
+  intentMap.set('Plans-info', PlansInfo);
   intentMap.set('Upgrade - select.number', UpgradeSelectNum)
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
