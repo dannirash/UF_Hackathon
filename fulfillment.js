@@ -67,10 +67,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         console.error("DEBUG LOG 3");
         const json = response.data.iphone_prices;
         let price2 = json[phone2];
-        agent.add(`Trading in your ${phone1} for an ${phone2} would be: ${price2}`);
-        calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
-        calculatePromotion("Unlimited Plus plan", 850, 80, price2);
-        calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
+        const quote1 = calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
+        const quote2 = calculatePromotion("Unlimited Plus plan", 850, 80, price2);
+        const quote3 = calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
+        const quotes = quote1 + quote2 + quote3;
+        agent.add(`Trading in your ${phone1} for an ${phone2} would be: ${quotes}`);
+
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -85,9 +87,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
     console.log("DEBUG LOG 5");
-    console.log("DEBUG LOG 5");
-    const result = tradeInValue - price + monthlyPrice;
-    agent.add(`- ${result}$ under ${plan}`);
+    
+    const result = tradeInValue - price;
+    return(`- ${result}$ under ${plan}`);
   }
 
   function getUpgradeInfo(phone) {
