@@ -70,7 +70,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       console.error("DEBUG LOG 2");
       return axios({
         method: "GET",
-        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/iphone_prices.json",
+        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/main/iphone_prices.json",
         data: "",
       })
         .then((response) => {
