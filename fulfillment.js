@@ -48,6 +48,45 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
 
+
+  function Upgrade(agent) {
+    const smartphones = agent.parameters.smartphone;
+    console.log("DEBUG LOG 1");
+    console.error("DEBUG LOG 1");
+    const phone1 = smartphones[0]; // Current phone
+    const phone2 = smartphones[1]; // New phone
+    console.log("DEBUG LOG 2");
+    console.error("DEBUG LOG 2");
+    return axios({
+      method: "GET",
+      url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/main/iphone_prices.json",
+      data: "",
+    })
+      .then((response) => {
+        //console.log("DEBUG LOG 3");
+        console.error("DEBUG LOG 3");
+        const json = response.data.iphone_prices;
+        const price2 = getPrice(json, phone2);
+        price2 = (price2 + price2);
+        agent.add(`Trading in your ${phone1} for an ${phone2} would be: ${price2}`);
+
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        agent.add("There was an error fetching pricing information. Please try again later.");
+      });
+  }
+
+  function getPrice(json, phone) {
+    return json[phone] || null;
+  }
+
+  function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
+    console.log("DEBUG LOG 5");
+    const result = tradeInValue - price + monthlyPrice;
+    agent.add(`- ${result}$ under ${plan}`);
+  }
+
   function getUpgradeInfo(phone) {
     const betterPromotionPhones = ["iPhone 8", "iPhone 9", "iPhone 10", "iPhone 11", "iPhone 12",
       "iPhone 13", "iPhone 14", "iPhone 15"];
@@ -56,48 +95,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     } else {
       return "For other phones, the maximum trade-in value is $830 for the Unlimited Ultimate plan, $415 for the Unlimited Plus plan, and $100 for the Unlimited Welcome plan.";
     }
-  }
-
-
-  function Upgrade(agent) {
-    const smartphones = agent.parameters.smartphone;
-
-    if (smartphones && smartphones.length >= 2) {
-      const phone1 = smartphones[0]; // Current phone
-      const phone2 = smartphones[1]; // New phone
-      agent.add(phone1 + phone2)
-      console.log(phone1 + phone2)
-      return axios({
-        method: "GET",
-        url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/iphone_prices.json",
-        data: "",
-      })
-        .then((response) => {
-          const json = response.data.iphone_prices;
-          const price2 = getPrice(json, phone2);
-
-          agent.add(`Trading in your ${phone1} for an ${phone2} would be:`);
-          calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
-          calculatePromotion("Unlimited Plus plan", 850, 80, price2);
-          calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
-
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          agent.add("There was an error fetching pricing information. Please try again later.");
-        });
-    } else {
-      agent.add("Please provide at least two valid phones for comparison.");
-    }
-  }
-
-  function getPrice(json, phone) {
-    return json[phone] || null;
-  }
-
-  function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
-    const result = tradeInValue - price + monthlyPrice;
-    agent.add(`- ${result}$ under ${plan}`);
   }
 
 
