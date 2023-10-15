@@ -50,11 +50,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function UpgradeSelectNum(agent) {
     let num = agent.parameters.number;
     if (num == 1)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Ultimate plan today! www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Ultimate plan today! www.verizon.com/tradein");
     else if(num == 2)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Plus plan today! www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Plus plan today! www.verizon.com/tradein");
     else if (num == 3)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Welcome plan today! www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Welcome plan today! www.verizon.com/tradein");
     else
         agent.add("Choose a valid plan");
   }
@@ -94,7 +94,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       });
   }
 
-
   function PlansInfo(agent) {
     const plan = agent.parameters.phone_plan;
     const plansDictionary = {
@@ -122,10 +121,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       if (plan.toLowerCase() === 'all') {
         let response = 'Here are the details for all plans:';
         for (const [plan, details] of Object.entries(plansDictionary)) {
-          response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}`;
+          response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}. Please visit our website for more informantion www.verizon.com/unlimited`;
         }
         agent.add(response);
-        //agent.add("Visit our website for more informantion \n\ www.verizon.com/plans/unlimited/");
       } else if (plansDictionary.hasOwnProperty(plan)) {
         const planDetails = plansDictionary[plan];
         const data = planDetails.data;
