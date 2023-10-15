@@ -61,34 +61,25 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   function Upgrade(agent) {
     const smartphones = agent.parameters.smartphone;
-    console.log("DEBUG LOG 1");
-    console.error("DEBUG LOG 1");
-      const phone1 = smartphones[0]; // Current phone
-      const phone2 = smartphones[1]; // New phone
-      agent.add(phone1 + phone2);
-      console.log("DEBUG LOG 2");
-      console.error("DEBUG LOG 2");
+    const smartphone = smartphones[0];
+    if (smartphone) {
       return axios({
         method: "GET",
         url: "https://raw.githubusercontent.com/dannirash/UF_Hackathon/main/iphone_prices.json",
         data: "",
       })
         .then((response) => {
-          //console.log("DEBUG LOG 3");
-          console.error("DEBUG LOG 3");
           const json = response.data.iphone_prices;
-          const price2 = getPrice(json, phone2);
-
-          agent.add(`Trading in your ${phone1} for an ${phone2} would be:`);
-          calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
-          calculatePromotion("Unlimited Plus plan", 850, 80, price2);
-          calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
-
+          const phone = smartphone;
+          const price = json[phone];
+          const upgradeInfo = getUpgradeInfo(phone);
+          agent.add(`The price of ${phone} is ${price}. Here is the plan upgrade information: ${upgradeInfo}`);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
           agent.add("There was an error fetching pricing information. Please try again later.");
         });
+    }
   }
 
   function getPrice(json, phone) {
