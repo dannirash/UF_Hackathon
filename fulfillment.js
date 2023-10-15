@@ -163,7 +163,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Trade-in', Tradein);
   intentMap.set('Upgrade', Upgrade);
-  intentMap.set('Upgrade - select.number', UpgradeSelectNum)
+  intentMap.set('Plans-info', PlansInfo);
+  intentMap.set('Upgrade - select.number', UpgradeSelectNum);
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
