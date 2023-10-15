@@ -77,7 +77,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         agent.add(`When upgrading from your ${phone1} to the ${phone2}, your costs would be as follows:\n
         1) ${quote1}\n
         2) ${quote2}\n
-        3) ${quote3}`);
+        3) ${quote3}\n
+        Do any of these options interest you?`);
 
       })
       .catch((error) => {
@@ -162,7 +163,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Trade-in', Tradein);
   intentMap.set('Upgrade', Upgrade);
-  intentMap.set('Plans-info', PlansInfo);
   intentMap.set('Upgrade - select.number', UpgradeSelectNum)
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
