@@ -70,8 +70,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         const quote1 = calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
         const quote2 = calculatePromotion("Unlimited Plus plan", 850, 80, price2);
         const quote3 = calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
-        const quotes = quote1 + quote2 + quote3;
-        agent.add(`Trading in your ${phone1} for an ${phone2} would be: ${quotes}`);
+        agent.add(`When upgrading from your ${phone1} to the ${phone2}, your costs would be as follows:\n
+        1) ${quote1}\n
+        2) ${quote2}\n
+        3) ${quote3}`);
 
       })
       .catch((error) => {
@@ -88,9 +90,14 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
     console.log("DEBUG LOG 5");
     let result = price - tradeInValue;
-    if (result < 0) {result = 0}
-    return(`| ${result}$ under ${plan}`);
+    if (result < 0) {
+      result = 0;
+      return(`Enjoy the seamless transition at no cost when you opt for the ${plan}.`);
+    }
+    return(`For the ${plan}, the price is $${result}.`);
   }
+
+  
 
   function getUpgradeInfo(phone) {
     const betterPromotionPhones = ["iPhone 8", "iPhone 9", "iPhone 10", "iPhone 11", "iPhone 12",
