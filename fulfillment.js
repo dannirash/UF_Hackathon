@@ -125,7 +125,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}`;
         }
         agent.add(response);
-        agent.add("Visit our website for more informantion \n\ www.verizon.com/plans/unlimited/");
+        //agent.add("Visit our website for more informantion \n\ www.verizon.com/plans/unlimited/");
       } else if (plansDictionary.hasOwnProperty(plan)) {
         const planDetails = plansDictionary[plan];
         const data = planDetails.data;
