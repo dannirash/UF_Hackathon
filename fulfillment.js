@@ -48,13 +48,15 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
   }
   function UpgradeSelectNum(agent) {
-    const num = agent.parameters.number;
-    if(num == 1){
-      agent.add("You chose plan 1");
-    }
-    else{
-      agent.add("Choose a correct plan");
-    }
+    let num = agent.parameters.number;
+    if (num == 1)
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Ultimate plan today! https://www.verizon.com/sales/digital/tradein.html");
+    else if(num == 2)
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Plus plan today! https://www.verizon.com/sales/digital/tradein.html");
+    else if (num == 3)
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Welcome plan today! https://www.verizon.com/sales/digital/tradein.html");
+    else
+        agent.add("Choose a valid plan");
   }
 
   function Upgrade(agent) {
@@ -77,7 +79,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
         agent.add(`When upgrading from your ${phone1} to the ${phone2}, your costs would be as follows:\n
         1) ${quote1}\n
         2) ${quote2}\n
-        3) ${quote3}\n
+        3) ${quote3}\n.
         Do any of these options interest you?`);
 
       })
@@ -118,6 +120,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}`;
         }
         agent.add(response);
+        agent.add("Visit our website for more informantion \n\ https://www.verizon.com/plans/unlimited/");
       } else if (plansDictionary.hasOwnProperty(plan)) {
         const planDetails = plansDictionary[plan];
         const data = planDetails.data;
@@ -142,9 +145,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     let result = price - tradeInValue;
     if (result < 0) {
       result = 0;
-      return(`Enjoy the seamless transition at no cost when you opt for the ${plan}.`);
+      return(`Enjoy the seamless transition at no cost when you opt for the ${plan} $${monthlyPrice}/month`);
     }
-    return(`For the ${plan}, the price is $${result}.`);
+    return(`For the ${plan}, a one time payment of $${result} and $${monthlyPrice}/month`);
   }
 
   function getUpgradeInfo(phone) {
@@ -165,7 +168,5 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Upgrade', Upgrade);
   intentMap.set('Plans-info', PlansInfo);
   intentMap.set('Upgrade - select.number', UpgradeSelectNum);
-  // intentMap.set('your intent name here', yourFunctionHandler);
-  // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
 });
