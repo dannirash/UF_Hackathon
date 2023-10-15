@@ -1,4 +1,4 @@
-// See https://github.com/dialogflow/dialogflow-fulfillment-nodejs
+// See github.com/dialogflow/dialogflow-fulfillment-nodejs
 // for Dialogflow fulfillment library docs, samples, and to report issues
 'use strict';
 
@@ -50,11 +50,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function UpgradeSelectNum(agent) {
     let num = agent.parameters.number;
     if (num == 1)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Ultimate plan today! https://www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Ultimate plan today! www.verizon.com/sales/digital/tradein.html");
     else if(num == 2)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Plus plan today! https://www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Plus plan today! www.verizon.com/sales/digital/tradein.html");
     else if (num == 3)
-        agent.add("Great choice! visit this link to get your trade in with an Unlimited Welcome plan today! https://www.verizon.com/sales/digital/tradein.html");
+        agent.add("Great choice! visit this link to get your trade in with an Unlimited Welcome plan today! www.verizon.com/sales/digital/tradein.html");
     else
         agent.add("Choose a valid plan");
   }
@@ -69,19 +69,24 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       data: "",
     })
       .then((response) => {
-        //
-        
         const json = response.data.iphone_prices;
-        let price2 = json[phone2];
-        const quote1 = calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
-        const quote2 = calculatePromotion("Unlimited Plus plan", 850, 80, price2);
-        const quote3 = calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
-        agent.add(`When upgrading from your ${phone1} to the ${phone2}, your costs would be as follows:\n
-        1) ${quote1}\n
-        2) ${quote2}\n
-        3) ${quote3}\n.
-        Do any of these options interest you?`);
-
+        // Extract the number from the string
+        const numModel1 = parseInt(phone1.match(/\d+/));
+        const numModel2 = parseInt(phone2.match(/\d+/));
+        // Check if the number is greater than or equal to 8
+        if (numModel1 >= 8 && numModel2 >= 8 && numModel1 < numModel2) {
+          let price2 = json[phone2];
+          const quote1 = calculatePromotion("Unlimited Ultimate plan", 1000, 90, price2);
+          const quote2 = calculatePromotion("Unlimited Plus plan", 850, 80, price2);
+          const quote3 = calculatePromotion("Unlimited Welcome plan", 415, 65, price2);
+          agent.add(`When upgrading from your ${phone1} to the ${phone2}, your costs would be as follows:\n
+          1) ${quote1}\n
+          2) ${quote2}\n
+          3) ${quote3}\n.
+          Do any of these options interest you?`);
+        } else{
+          agent.add(`Sorry we do not support ${phone1} trade in for ${phone2}`);
+        }
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -120,7 +125,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           response += `\n${plan}: Data - ${details.data}, Call and Text - ${details.call_and_text}, Mobile Hotspot - ${details.mobile_hotspot}, Cost - ${details.cost}`;
         }
         agent.add(response);
-        agent.add("Visit our website for more informantion \n\ https://www.verizon.com/plans/unlimited/");
+        agent.add("Visit our website for more informantion \n\ www.verizon.com/plans/unlimited/");
       } else if (plansDictionary.hasOwnProperty(plan)) {
         const planDetails = plansDictionary[plan];
         const data = planDetails.data;
