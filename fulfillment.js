@@ -78,10 +78,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   function getPrice(json, phone) {
+    console.log("DEBUG LOG 4");
     return json[phone] || null;
   }
 
   function calculatePromotion(plan, tradeInValue, monthlyPrice, price) {
+    console.log("DEBUG LOG 5");
     console.log("DEBUG LOG 5");
     const result = tradeInValue - price + monthlyPrice;
     agent.add(`- ${result}$ under ${plan}`);
